@@ -1,0 +1,35 @@
+import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { cn } from '@shared/lib/cn'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode
+  variant?: 'primary' | 'secondary' | 'text'
+}
+
+const variantStyles = {
+  primary: 'bg-palette-primary text-palette-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed',
+  secondary: 'bg-palette-gray text-text-primary hover:bg-palette-gray/80 disabled:opacity-50 disabled:cursor-not-allowed',
+  text: 'bg-transparent text-palette-primary hover:bg-palette-lightGray disabled:opacity-50 disabled:cursor-not-allowed',
+}
+
+export const Button = ({ 
+  children, 
+  variant = 'primary', 
+  className = '',
+  ...props 
+}: ButtonProps) => {
+  return (
+    <button 
+      className={cn(
+        'px-6 py-3 rounded-lg font-medium transition-all duration-200',
+        variant === 'text' ? 'px-4 py-2' : '',
+        variantStyles[variant],
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+
