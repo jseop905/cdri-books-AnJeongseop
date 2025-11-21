@@ -68,6 +68,8 @@ export const searchBooks = async (
       Authorization: `KakaoAK ${restApiKey}`,
     },
   })
+  console.log('response', response)
+  console.log('searchParams', searchParams.toString())
 
   if (!response.ok) {
     throw new Error(`API request failed: ${response.status} ${response.statusText}`)
