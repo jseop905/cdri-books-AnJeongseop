@@ -5,7 +5,7 @@ export const Header = () => {
   const location = useLocation()
 
   return (
-    <header className="bg-palette-white border-b border-palette-gray h-20 py-4 sticky top-0 z-50 shadow-sm">
+    <header className="bg-palette-white h-20 py-4 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-8 flex items-center relative h-full">
         <div className="text-title1 text-text-primary flex items-center">
           CERTICOS BOOKS
