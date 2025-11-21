@@ -21,11 +21,15 @@ export const Button = ({
   return (
     <button 
       className={cn(
-        'px-6 py-3 rounded-lg font-medium transition-all duration-200',
-        variant === 'text' ? 'px-4 py-2' : '',
+        'flex items-center justify-center rounded-lg font-medium transition-all duration-200',
+        'w-[115px] h-12 px-5 py-[13px]',
         variantStyles[variant],
         className
       )}
+      style={{
+        gap: '10px',
+        ...props.style,
+      }}
       {...props}
     >
       {children}

@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Input, Button, Typography } from '@shared/ui'
+import { Input } from '@shared/ui'
 import searchIcon from '@shared/assets/icons/Search.png'
 
 export const BookSearch = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [resultCount, setResultCount] = useState<number | null>(null)
+  const [resultCount, setResultCount] = useState<number>(0)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -16,9 +16,9 @@ export const BookSearch = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Typography variant="title2" className="text-text-primary font-bold">
-        도서검색
-      </Typography>
+      <div className="text-title2" style={{ color: '#1A1E27' }}>
+        도서 검색
+      </div>
       <form onSubmit={handleSubmit} className="flex gap-4 items-center">
         <div className="w-[480px] relative">
           <img 
@@ -31,23 +31,46 @@ export const BookSearch = () => {
             placeholder="검색어를 입력하세요"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 h-[50px]"
+            className="h-[50px] pl-[50px] pr-[10px] py-[10px] rounded-[100px] text-caption text-text-subtitle"
+            style={{ 
+              backgroundColor: '#F2F4F6',
+              border: 'none',
+            }}
           />
         </div>
-        <Button type="submit" className="w-[72px]">
-          검색
-        </Button>
-      </form>
-      {resultCount !== null && (
-        <div className="flex items-center gap-2">
-          <Typography variant="body1" className="text-text-primary">
-            도서 검색 결과
-          </Typography>
-          <Typography variant="body1" className="text-text-secondary">
-            총 {resultCount}건
-          </Typography>
+        <div
+          className="flex items-center justify-center w-[72px] h-[35.27px] rounded-lg border border-palette-gray bg-transparent hover:bg-palette-lightGray transition-all duration-200 cursor-pointer text-body2 text-text-subtitle"
+          onClick={() => {
+            // TODO: 상세검색 이벤트 구현
+          }}
+        >
+          상세검색
         </div>
-      )}
+      </form>
+      <div className="flex items-center gap-4">
+        <div 
+          className="text-text-primary"
+          style={{
+            fontSize: '16px',
+            lineHeight: '24px',
+            fontWeight: 500,
+            letterSpacing: '0%',
+          }}
+        >
+          도서 검색 결과
+        </div>
+        <div 
+          className="text-text-primary"
+          style={{
+            fontSize: '16px',
+            lineHeight: '24px',
+            fontWeight: 500,
+            letterSpacing: '0%',
+          }}
+        >
+          총 <span className="text-palette-primary">{resultCount}</span>건
+        </div>
+      </div>
     </div>
   )
 }

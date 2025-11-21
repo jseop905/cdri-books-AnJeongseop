@@ -1,2 +1,0 @@
-export { Typography } from './typography'
-

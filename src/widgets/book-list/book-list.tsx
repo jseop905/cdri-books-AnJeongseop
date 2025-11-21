@@ -1,4 +1,3 @@
-import { Typography } from '@shared/ui'
 
 // 임시 더미 데이터
 const dummyBooks = [
@@ -45,12 +44,12 @@ export const BookList = () => {
               />
             </div>
             <div className="p-4 flex flex-col gap-2">
-              <Typography variant="body2Bold" className="text-text-primary m-0 line-clamp-2">
+              <div className="text-body2-bold text-text-primary m-0 line-clamp-2">
                 {book.title}
-              </Typography>
-              <Typography variant="small" className="text-text-secondary m-0">
+              </div>
+              <div className="text-small text-text-secondary m-0">
                 {book.author}
-              </Typography>
+              </div>
             </div>
           </div>
         ))}

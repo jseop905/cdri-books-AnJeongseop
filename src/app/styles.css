@@ -9,3 +9,30 @@
   }
 }
 
+@layer utilities {
+  .text-title1 {
+    @apply font-bold;
+  }
+  .text-title2 {
+    @apply font-bold;
+  }
+  .text-title3 {
+    @apply font-bold;
+  }
+  .text-body1 {
+    @apply font-medium;
+  }
+  .text-body2 {
+    @apply font-medium;
+  }
+  .text-body2-bold {
+    @apply font-bold;
+  }
+  .text-caption {
+    @apply font-medium;
+  }
+  .text-small {
+    @apply font-medium;
+  }
+}
+

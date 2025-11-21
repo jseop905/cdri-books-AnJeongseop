@@ -4,7 +4,7 @@ import { BookList } from '@widgets/book-list'
 
 export const MainPage = () => {
   return (
-    <div className="min-h-screen bg-palette-lightGray">
+    <div className="min-h-screen">
       <Header />
       <main className="max-w-[960px] mx-auto pb-16 flex flex-col gap-8">
         <div className="mt-[72px]">
