@@ -14,6 +14,9 @@ export const BookSearchSection = () => {
     data,
     isLoading,
     isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useBookSearch({
     query: searchQuery,
     target: searchTarget,
@@ -48,6 +51,9 @@ export const BookSearchSection = () => {
         hasSearched={hasSearched}
         isLoading={isLoading}
         isError={isError}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        onLoadMore={fetchNextPage}
       />
     </div>
   )

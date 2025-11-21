@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import bookIcon from '@shared/assets/icons/icon-book.png'
 import type { Book } from '@shared/api'
 import { Button, Tooltip } from '@shared/ui'
@@ -7,9 +8,50 @@ interface BookListProps {
   hasSearched: boolean
   isLoading?: boolean
   isError?: boolean
+  hasNextPage?: boolean
+  isFetchingNextPage?: boolean
+  onLoadMore?: () => void
 }
 
-export const BookList = ({ books, hasSearched, isLoading, isError }: BookListProps) => {
+export const BookList = ({ 
+  books, 
+  hasSearched, 
+  isLoading, 
+  isError,
+  hasNextPage,
+  isFetchingNextPage,
+  onLoadMore,
+}: BookListProps) => {
+  const loadMoreRef = useRef<HTMLDivElement>(null)
+
+  // Intersection Observer로 하단 감지
+  useEffect(() => {
+    if (!hasNextPage || !onLoadMore || isLoading) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          onLoadMore()
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    )
+
+    const currentRef = loadMoreRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef)
+      }
+    }
+  }, [hasNextPage, onLoadMore, isLoading, isFetchingNextPage])
+
   // 로딩 중
   if (isLoading) {
     return (
@@ -145,6 +187,20 @@ export const BookList = ({ books, hasSearched, isLoading, isError }: BookListPro
           </div>
         ))}
       </div>
+      {/* 무한 스크롤 트리거 요소 */}
+      {hasNextPage && (
+        <div ref={loadMoreRef} className="h-20 flex items-center justify-center">
+          {isFetchingNextPage && (
+            <div className="text-body1 text-text-secondary">더 불러오는 중...</div>
+          )}
+        </div>
+      )}
+      {/* 모든 데이터 로드 완료 */}
+      {!hasNextPage && books.length > 0 && (
+        <div className="h-20 flex items-center justify-center">
+          <div className="text-body1 text-text-secondary">모든 결과를 불러왔습니다.</div>
+        </div>
+      )}
     </div>
   )
 }
