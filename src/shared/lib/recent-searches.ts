@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from './cookie'
 
 const RECENT_SEARCHES_KEY = 'recent_searches'
-const MAX_RECENT_SEARCHES = 10
+const MAX_RECENT_SEARCHES = 8
 
 /**
  * 최근 검색어를 가져옵니다.
