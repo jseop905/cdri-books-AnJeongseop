@@ -211,7 +211,9 @@ export const BookList = ({
                   <Button
                     variant="primary"
                     onClick={() => {
-                      alert(`${book.title}\n구매가 완료되었습니다.`)
+                      if (book.url) {
+                        window.open(book.url, '_blank')
+                      }
                     }}
                     className="w-[115px] h-[48px] px-[20px] py-[13px] rounded text-body2"
                   >
@@ -411,7 +413,9 @@ export const BookList = ({
                         <Button
                           variant="primary"
                           onClick={() => {
-                            alert(`${book.title}\n구매가 완료되었습니다.`)
+                            if (book.url) {
+                              window.open(book.url, '_blank')
+                            }
                           }}
                           className="w-full h-[48px] px-[20px] py-[13px] rounded text-body2"
                         >
