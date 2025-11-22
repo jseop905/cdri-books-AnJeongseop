@@ -73,18 +73,10 @@ export const FavoritesPage = () => {
         <div className="mt-[72px] flex flex-col gap-8">
           {/* 타이틀 및 결과 카운트 */}
           <div className="flex flex-col gap-4">
-            <div className="text-title2" style={{ color: '#1A1E27' }}>
+            <div className="text-title2 text-text-primary">
                 내가 찜한 책
             </div>
-            <div 
-              className="text-text-primary"
-              style={{
-                fontSize: '16px',
-                lineHeight: '24px',
-                fontWeight: 500,
-                letterSpacing: '0%',
-              }}
-            >
+            <div className="text-caption text-text-primary leading-6">
               찜한 책 총 <span className="text-palette-primary">{resultCount}</span>건
             </div>
           </div>

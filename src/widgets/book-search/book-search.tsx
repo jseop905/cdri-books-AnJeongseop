@@ -103,7 +103,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-title2" style={{ color: '#1A1E27' }}>
+      <div className="text-title2 text-text-primary">
         도서 검색
       </div>
       <form onSubmit={handleSubmit} className="flex gap-4 items-center">
@@ -119,11 +119,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onClick={handleInputClick}
-            className="h-[50px] pl-[50px] pr-[10px] py-[10px] text-caption text-text-subtitle"
-            style={{ 
-              backgroundColor: '#F2F4F6',
-              border: 'none',
-            }}
+            className="h-[50px] pl-[50px] pr-[10px] py-[10px] text-caption text-text-subtitle bg-palette-lightGray border-none"
           />
           {showRecentSearches && recentSearches.length > 0 && (
             <div 
@@ -214,14 +210,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                       onClick={() => setShowSelectDropdown(!showSelectDropdown)}
                       className="w-full h-[36px] border-0 border-b border-palette-gray rounded-none bg-transparent cursor-pointer flex items-center justify-between relative"
                     >
-                      <div 
-                        className="pl-2"
-                        style={{ 
-                          fontSize: '14px', 
-                          fontWeight: 700,
-                          color: '#1A1E27',
-                        }}
-                      >
+                      <div className="pl-2 text-body2-bold text-text-primary">
                         {detailSearchTarget === 'title' ? '제목' : detailSearchTarget === 'person' ? '저자명' : '출판사'}
                       </div>
                       {/* 화살표 아이콘 */}
@@ -252,8 +241,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                               setDetailSearchTarget('title')
                               setShowSelectDropdown(false)
                             }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors"
-                            style={{ color: '#8D94A0', fontSize: '14px' }}
+                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
                           >
                             제목
                           </div>
@@ -264,8 +252,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                               setDetailSearchTarget('person')
                               setShowSelectDropdown(false)
                             }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors"
-                            style={{ color: '#8D94A0', fontSize: '14px' }}
+                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
                           >
                             저자명
                           </div>
@@ -276,8 +263,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                               setDetailSearchTarget('publisher')
                               setShowSelectDropdown(false)
                             }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors"
-                            style={{ color: '#8D94A0', fontSize: '14px' }}
+                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
                           >
                             출판사
                           </div>
@@ -312,26 +298,10 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
         </div>
       </form>
       <div className="flex items-center gap-4">
-        <div 
-          className="text-text-primary"
-          style={{
-            fontSize: '16px',
-            lineHeight: '24px',
-            fontWeight: 500,
-            letterSpacing: '0%',
-          }}
-        >
+        <div className="text-caption text-text-primary leading-6">
           도서 검색 결과
         </div>
-        <div 
-          className="text-text-primary"
-          style={{
-            fontSize: '16px',
-            lineHeight: '24px',
-            fontWeight: 500,
-            letterSpacing: '0%',
-          }}
-        >
+        <div className="text-caption text-text-primary leading-6">
           총 <span className="text-palette-primary">{resultCount}</span>건
         </div>
       </div>

@@ -337,72 +337,29 @@ export const BookList = ({
                             <>
                               {/* 원가 */}
                               <div className="flex items-center gap-2">
-                                <div 
-                                  style={{
-                                    fontWeight: 500,
-                                    fontSize: '10px',
-                                    lineHeight: '22px',
-                                    color: '#8D94A0',
-                                  }}
-                                >
+                                <div className="text-small text-text-subtitle leading-[22px]">
                                   원가
                                 </div>
-                                <div 
-                                  className="line-through"
-                                  style={{
-                                    fontWeight: 350,
-                                    fontSize: '18px',
-                                    lineHeight: '26px',
-                                    color: '#1A1E27',
-                                  }}
-                                >
+                                <div className="line-through text-[18px] leading-[26px] font-light text-text-primary">
                                   {book.price.toLocaleString()}원
                                 </div>
                               </div>
                               {/* 할인가 */}
                               <div className="flex items-center gap-2">
-                                <div 
-                                  style={{
-                                    fontWeight: 500,
-                                    fontSize: '10px',
-                                    lineHeight: '22px',
-                                    color: '#8D94A0',
-                                  }}
-                                >
+                                <div className="text-small text-text-subtitle leading-[22px]">
                                   할인가
                                 </div>
-                                <div 
-                                  style={{
-                                    fontWeight: 700,
-                                    fontSize: '18px',
-                                    lineHeight: '26px',
-                                    color: '#1A1E27',
-                                  }}
-                                >
+                                <div className="text-[18px] leading-[26px] font-bold text-text-primary">
                                   {book.sale_price.toLocaleString()}원
                                 </div>
                               </div>
                             </>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <div 
-                                style={{
-                                  fontWeight: 500,
-                                  fontSize: '10px',
-                                  lineHeight: '22px',
-                                  color: '#8D94A0',
-                                }}
-                              >
+                              <div className="text-small text-text-subtitle leading-[22px]">
                                 원가
                               </div>
-                              <div 
-                                style={{
-                                  fontWeight: 350,
-                                  fontSize: '18px',
-                                  lineHeight: '26px',
-                                  color: '#1A1E27',
-                                }}
-                              >
+                              <div className="text-[18px] leading-[26px] font-light text-text-primary">
                                 {book.price.toLocaleString()}원
                               </div>
                             </div>
