@@ -9,7 +9,6 @@ export const FavoritesPage = () => {
   const [allFavoriteBooks, setAllFavoriteBooks] = useState<Book[]>([])
   const [displayedBooks, setDisplayedBooks] = useState<Book[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [isLoading, setIsLoading] = useState(false)
 
   const loadFavorites = () => {
     const favorites = getFavorites()
@@ -54,12 +53,7 @@ export const FavoritesPage = () => {
   }, [currentPage, allFavoriteBooks])
 
   const handleLoadMore = () => {
-    setIsLoading(true)
-    // 다음 페이지 로드 시뮬레이션 (실제로는 즉시 로드)
-    setTimeout(() => {
-      setCurrentPage((prev) => prev + 1)
-      setIsLoading(false)
-    }, 300) // 300ms 딜레이
+    setCurrentPage((prev) => prev + 1)
   }
 
   const hasNextPage = displayedBooks.length < allFavoriteBooks.length
@@ -87,7 +81,6 @@ export const FavoritesPage = () => {
             isLoading={false}
             isError={false}
             hasNextPage={hasNextPage}
-            isFetchingNextPage={isLoading}
             onLoadMore={handleLoadMore}
             onFavoriteChange={loadFavorites}
           />

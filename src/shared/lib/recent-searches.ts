@@ -44,6 +44,7 @@ export const removeRecentSearch = (query: string): void => {
   const searches = getRecentSearches()
   const filtered = searches.filter((search) => search !== query)
   setCookie(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(filtered), RECENT_SEARCHES.COOKIE_EXPIRY_DAYS)
+}
 
 /**
  * 최근 검색어를 모두 삭제합니다.

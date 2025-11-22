@@ -12,18 +12,6 @@ interface BookCardProps {
   isExpanded: boolean
 }
 
-/**
- * 책 카드 기본 뷰 컴포넌트
- * 축약된 형태의 책 정보를 표시합니다.
- * 
- * FSD 구조: widgets/book-list/ui
- * - 도메인 특화 컴포넌트이므로 widgets 내부에 위치
- * - BookList 위젯의 일부로 사용되며, 독립적으로 재사용 가능한 구조
- * 
- * 메모이제이션: React.memo로 감싸서 props가 변경되지 않으면 리렌더링 방지
- * - 리스트에서 많은 아이템이 있을 때, 다른 책의 상태 변경 시에도 이 컴포넌트는 리렌더링되지 않음
- * - 성능 최적화: 100개 책 중 1개만 변경되어도 100개 모두 리렌더링되는 것을 방지
- */
 export const BookCard = memo(({
   book,
   isFavorite,

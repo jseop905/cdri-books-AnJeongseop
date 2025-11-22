@@ -34,12 +34,6 @@ export const BookList = ({
     setFavoriteBooks(new Set(favorites.map((book) => book.isbn)))
   }, [])
 
-  /**
-   * 책 상세 정보 토글 함수
-   * useCallback으로 메모이제이션하여 함수 참조를 유지
-   * - BookCard, BookDetail에 props로 전달되는 함수
-   * - 함수 참조가 변경되지 않으면 자식 컴포넌트가 불필요하게 리렌더링되지 않음
-   */
   const toggleBookDetail = useCallback((isbn: string) => {
     setExpandedBooks((prev) => {
       const newSet = new Set(prev)
@@ -52,13 +46,6 @@ export const BookList = ({
     })
   }, [])
 
-  /**
-   * 찜 토글 함수
-   * useCallback으로 메모이제이션하여 함수 참조를 유지
-   * - BookCard, BookDetail에 props로 전달되는 함수
-   * - onFavoriteChange가 변경되지 않는 한 함수 참조 유지
-   * - 성능 최적화: 리스트의 각 아이템이 같은 함수 참조를 받아 불필요한 리렌더링 방지
-   */
   const handleToggleFavorite = useCallback((book: Book, e: React.MouseEvent) => {
     e.stopPropagation()
     const isNowFavorite = toggleFavorite(book)
