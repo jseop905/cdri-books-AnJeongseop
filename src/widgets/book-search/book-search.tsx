@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { Input, Button } from '@shared/ui'
 import searchIcon from '@shared/assets/icons/icon-search.png'
 import { getRecentSearches, removeRecentSearch } from '@shared/lib/recent-searches'
@@ -41,19 +41,37 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
     }
   }, [])
 
-  const handleInputClick = () => {
+  /**
+   * 입력창 클릭 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - Input 컴포넌트의 onClick prop으로 전달
+   * - 함수 참조가 변경되지 않으면 Input 컴포넌트가 불필요하게 리렌더링되지 않음
+   */
+  const handleInputClick = useCallback(() => {
     const searches = getRecentSearches()
     setRecentSearches(searches)
     setShowRecentSearches(searches.length > 0)
-  }
+  }, [])
 
-  const handleRecentSearchClick = (query: string) => {
+  /**
+   * 최근 검색어 클릭 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - 최근 검색어 리스트의 각 항목에 전달되는 함수
+   * - onSearch가 변경되지 않는 한 함수 참조 유지
+   */
+  const handleRecentSearchClick = useCallback((query: string) => {
     setSearchQuery(query)
     setShowRecentSearches(false)
     onSearch(query)
-  }
+  }, [onSearch])
 
-  const handleDeleteSearch = (e: React.MouseEvent, query: string) => {
+  /**
+   * 검색어 삭제 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - 최근 검색어 리스트의 각 항목에 전달되는 함수
+   * - 함수 참조가 변경되지 않으면 리스트 아이템이 불필요하게 리렌더링되지 않음
+   */
+  const handleDeleteSearch = useCallback((e: React.MouseEvent, query: string) => {
     e.stopPropagation()
     removeRecentSearch(query)
     const updatedSearches = getRecentSearches()
@@ -61,9 +79,15 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
     if (updatedSearches.length === 0) {
       setShowRecentSearches(false)
     }
-  }
+  }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /**
+   * 검색 폼 제출 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - form의 onSubmit prop으로 전달
+   * - onSearch가 변경되지 않는 한 함수 참조 유지
+   */
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     setShowRecentSearches(false)
     if (searchQuery.trim().length > 0) {
@@ -73,13 +97,23 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
       setShowDetailSearch(false)
       onSearch(searchQuery.trim())
     }
-  }
+  }, [searchQuery, onSearch])
 
-  const handleDetailSearchClick = () => {
-    setShowDetailSearch(!showDetailSearch)
-  }
+  /**
+   * 상세 검색 토글 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - 상세 검색 버튼의 onClick prop으로 전달
+   */
+  const handleDetailSearchClick = useCallback(() => {
+    setShowDetailSearch((prev) => !prev)
+  }, [])
 
-  const handleDetailSearchSubmit = () => {
+  /**
+   * 상세 검색 제출 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - detailSearchQuery, detailSearchTarget, onSearch가 변경될 때만 함수 재생성
+   */
+  const handleDetailSearchSubmit = useCallback(() => {
     const trimmedQuery = detailSearchQuery.trim()
     if (trimmedQuery.length > 0) {
       // 기본 검색 내용 초기화
@@ -88,18 +122,27 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
       setShowDetailSearch(false)
       // 상세 검색 내용은 유지 (초기화하지 않음)
     }
-  }
+  }, [detailSearchQuery, detailSearchTarget, onSearch])
 
-  const handleDetailSearchKeyPress = (e: React.KeyboardEvent) => {
+  /**
+   * 상세 검색 키보드 이벤트 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   * - handleDetailSearchSubmit를 의존성으로 가짐
+   */
+  const handleDetailSearchKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault()
       handleDetailSearchSubmit()
     }
-  }
+  }, [handleDetailSearchSubmit])
 
-  const handleCloseDetailSearch = () => {
+  /**
+   * 상세 검색 닫기 핸들러
+   * useCallback으로 메모이제이션하여 함수 참조 유지
+   */
+  const handleCloseDetailSearch = useCallback(() => {
     setShowDetailSearch(false)
-  }
+  }, [])
 
   return (
     <div className="flex flex-col gap-4">

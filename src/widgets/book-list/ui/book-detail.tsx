@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { Book } from '@shared/api'
 import { Button, Tooltip } from '@shared/ui'
 import likeOnIcon from '@shared/assets/icons/like-on.png'
@@ -19,8 +20,12 @@ interface BookDetailProps {
  * - 도메인 특화 컴포넌트이므로 widgets 내부에 위치
  * - BookCard와 함께 BookList 위젯의 일부로 사용
  * - PriceDisplay 컴포넌트를 재사용하여 중복 제거
+ * 
+ * 메모이제이션: React.memo로 감싸서 props가 변경되지 않으면 리렌더링 방지
+ * - 상세 정보는 더 많은 DOM 요소를 포함하므로 리렌더링 비용이 높음
+ * - 다른 책의 상태 변경 시 이 컴포넌트는 리렌더링되지 않음
  */
-export const BookDetail = ({
+export const BookDetail = memo(({
   book,
   isFavorite,
   onToggleFavorite,
@@ -130,5 +135,5 @@ export const BookDetail = ({
       </div>
     </div>
   )
-}
+})
 
