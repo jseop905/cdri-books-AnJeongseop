@@ -3,6 +3,7 @@ import { BookSearch } from '@widgets/book-search'
 import { BookList } from '@widgets/book-list'
 import { useBookSearch, flattenBooks } from '@features/book-search'
 import { addRecentSearch } from '@shared/lib/recent-searches'
+import { PAGE_SIZE } from '@shared/config/constants'
 import type { Book } from '@shared/api'
 
 export const BookSearchSection = () => {
@@ -21,7 +22,7 @@ export const BookSearchSection = () => {
     query: searchQuery,
     target: searchTarget,
     enabled: hasSearched && searchQuery.trim().length > 0,
-    size: 10,
+    size: PAGE_SIZE.BOOKS,
   })
 
   const books: Book[] = flattenBooks(data)

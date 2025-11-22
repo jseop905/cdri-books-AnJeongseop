@@ -1,4 +1,5 @@
 // Cookie 유틸리티 함수
+import { RECENT_SEARCHES } from '@shared/config/constants'
 
 /**
  * Cookie에 값을 저장합니다.
@@ -7,7 +8,7 @@
  * @param days 만료일 (기본값: 30일)
  * @returns 저장 성공 여부
  */
-export const setCookie = (name: string, value: string, days: number = 30): boolean => {
+export const setCookie = (name: string, value: string, days: number = RECENT_SEARCHES.COOKIE_EXPIRY_DAYS): boolean => {
   try {
     // 쿠키 크기 제한 체크 (약 4KB, 안전하게 3.5KB로 제한)
     const encodedValue = encodeURIComponent(value)

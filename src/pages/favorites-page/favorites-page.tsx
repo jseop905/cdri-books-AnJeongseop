@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { Header } from '@widgets/header'
 import { BookList } from '@widgets/book-list'
 import { getFavorites } from '@shared/lib/favorites'
+import { PAGE_SIZE, STORAGE_KEYS } from '@shared/config/constants'
 import type { Book } from '@shared/api'
-
-const PAGE_SIZE = 10 // 페이지당 표시할 책 개수
 
 export const FavoritesPage = () => {
   const [allFavoriteBooks, setAllFavoriteBooks] = useState<Book[]>([])
@@ -16,7 +15,7 @@ export const FavoritesPage = () => {
     const favorites = getFavorites()
     setAllFavoriteBooks(favorites)
     // 첫 페이지만 표시
-    setDisplayedBooks(favorites.slice(0, PAGE_SIZE))
+    setDisplayedBooks(favorites.slice(0, PAGE_SIZE.FAVORITES))
     setCurrentPage(1)
   }
 
@@ -28,7 +27,7 @@ export const FavoritesPage = () => {
   useEffect(() => {
     // localStorage 변경 이벤트 리스너
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'favorites' || e.key === null) {
+      if (e.key === STORAGE_KEYS.FAVORITES || e.key === null) {
         loadFavorites()
       }
     }
@@ -50,7 +49,7 @@ export const FavoritesPage = () => {
 
   // 페이지 변경 시 displayedBooks 업데이트
   useEffect(() => {
-    const endIndex = currentPage * PAGE_SIZE
+    const endIndex = currentPage * PAGE_SIZE.FAVORITES
     setDisplayedBooks(allFavoriteBooks.slice(0, endIndex))
   }, [currentPage, allFavoriteBooks])
 
@@ -60,7 +59,7 @@ export const FavoritesPage = () => {
     setTimeout(() => {
       setCurrentPage((prev) => prev + 1)
       setIsLoading(false)
-    }, 300)
+    }, 300) // 300ms 딜레이
   }
 
   const hasNextPage = displayedBooks.length < allFavoriteBooks.length

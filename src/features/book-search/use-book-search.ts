@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { searchBooks, type SearchBookParams, type SearchBookResponse, type Book } from '@shared/api'
+import { PAGE_SIZE, API_CONFIG } from '@shared/config/constants'
 
 export interface UseBookSearchOptions {
   query: string
@@ -10,7 +11,7 @@ export interface UseBookSearchOptions {
 }
 
 export const useBookSearch = (options: UseBookSearchOptions) => {
-  const { query, sort, size = 10, target, enabled = true } = options
+  const { query, sort, size = PAGE_SIZE.BOOKS, target, enabled = true } = options
 
   return useInfiniteQuery<SearchBookResponse>({
     queryKey: ['bookSearch', query, sort, size, target],
@@ -31,7 +32,7 @@ export const useBookSearch = (options: UseBookSearchOptions) => {
     },
     initialPageParam: 1,
     enabled: enabled && query.trim().length > 0,
-    staleTime: 5 * 60 * 1000, // 5분
+    staleTime: API_CONFIG.STALE_TIME,
   })
 }
 

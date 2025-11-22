@@ -1,6 +1,5 @@
 import type { Book } from '@shared/api'
-
-const FAVORITES_KEY = 'favorites'
+import { STORAGE_KEYS } from '@shared/config/constants'
 
 /**
  * 찜 목록을 가져옵니다.
@@ -8,7 +7,7 @@ const FAVORITES_KEY = 'favorites'
  */
 export const getFavorites = (): Book[] => {
   try {
-    const stored = localStorage.getItem(FAVORITES_KEY)
+    const stored = localStorage.getItem(STORAGE_KEYS.FAVORITES)
     if (!stored) return []
     
     const favorites = JSON.parse(stored) as Book[]
@@ -47,7 +46,7 @@ export const addFavorite = (book: Book): boolean => {
   
   // localStorage에 저장
   try {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated))
+    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(updated))
     // 같은 탭에서의 변경을 알리기 위한 커스텀 이벤트 발생
     window.dispatchEvent(new Event('favoritesChanged'))
     return true
@@ -69,7 +68,7 @@ export const removeFavorite = (isbn: string): void => {
   const favorites = getFavorites()
   const filtered = favorites.filter((book) => book.isbn !== isbn)
   try {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(filtered))
+    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(filtered))
     // 같은 탭에서의 변경을 알리기 위한 커스텀 이벤트 발생
     window.dispatchEvent(new Event('favoritesChanged'))
   } catch (error) {
@@ -101,7 +100,7 @@ export const toggleFavorite = (book: Book): boolean => {
  */
 export const clearFavorites = (): void => {
   try {
-    localStorage.removeItem(FAVORITES_KEY)
+    localStorage.removeItem(STORAGE_KEYS.FAVORITES)
   } catch (error) {
     console.error('Failed to clear favorites from localStorage:', error)
   }

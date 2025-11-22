@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
+import { API_CONFIG } from '@shared/config/constants'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 5 * 60 * 1000, // 5분
+      retry: API_CONFIG.RETRY_COUNT,
+      staleTime: API_CONFIG.STALE_TIME,
     },
   },
 })

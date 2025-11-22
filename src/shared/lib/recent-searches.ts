@@ -1,14 +1,12 @@
 import { getCookie, setCookie } from './cookie'
-
-const RECENT_SEARCHES_KEY = 'recent_searches'
-const MAX_RECENT_SEARCHES = 8
+import { RECENT_SEARCHES, STORAGE_KEYS } from '@shared/config/constants'
 
 /**
  * 최근 검색어를 가져옵니다.
  * @returns 최근 검색어 배열 (최신순)
  */
 export const getRecentSearches = (): string[] => {
-  const cookieValue = getCookie(RECENT_SEARCHES_KEY)
+  const cookieValue = getCookie(STORAGE_KEYS.RECENT_SEARCHES)
   if (!cookieValue) return []
   
   try {
@@ -32,10 +30,10 @@ export const addRecentSearch = (query: string): void => {
   const filtered = searches.filter((search) => search !== query)
   
   // 최신 검색어를 맨 앞에 추가
-  const updated = [query, ...filtered].slice(0, MAX_RECENT_SEARCHES)
+  const updated = [query, ...filtered].slice(0, RECENT_SEARCHES.MAX_COUNT)
   
   // Cookie에 저장
-  setCookie(RECENT_SEARCHES_KEY, JSON.stringify(updated), 30)
+  setCookie(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(updated), RECENT_SEARCHES.COOKIE_EXPIRY_DAYS)
 }
 
 /**
@@ -45,13 +43,12 @@ export const addRecentSearch = (query: string): void => {
 export const removeRecentSearch = (query: string): void => {
   const searches = getRecentSearches()
   const filtered = searches.filter((search) => search !== query)
-  setCookie(RECENT_SEARCHES_KEY, JSON.stringify(filtered), 30)
-}
+  setCookie(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(filtered), RECENT_SEARCHES.COOKIE_EXPIRY_DAYS)
 
 /**
  * 최근 검색어를 모두 삭제합니다.
  */
 export const clearRecentSearches = (): void => {
-  setCookie(RECENT_SEARCHES_KEY, JSON.stringify([]), 30)
+  setCookie(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify([]), RECENT_SEARCHES.COOKIE_EXPIRY_DAYS)
 }
 
