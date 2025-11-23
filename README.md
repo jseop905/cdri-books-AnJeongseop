@@ -61,8 +61,6 @@ src/
 ├── features/              # 비즈니스 기능
 │   └── book-search/       # 도서 검색 훅 (React Query infinite query)
 │
-├── entities/              # 비즈니스 엔티티 (현재 프로젝트에서는 미사용)
-│
 └── shared/                # 공유 코드
     ├── api/               # API 클라이언트 (카카오 도서 검색 API)
     ├── lib/               # 유틸리티 함수
