@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { clsx } from 'clsx'
 import type { PaletteColor } from '@shared/config/colors'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,9 +27,7 @@ export const Button = ({
   ...props 
 }: ButtonProps) => {
   const variantStyle = variantStyles[variant] || ''
-  const combinedClassName = className 
-    ? `${baseStyles} ${variantStyle} ${className}`.trim()
-    : `${baseStyles} ${variantStyle}`.trim()
+  const combinedClassName = clsx(baseStyles, variantStyle, className)
   
   return (
     <button 

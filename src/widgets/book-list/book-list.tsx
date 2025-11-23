@@ -12,6 +12,7 @@ interface BookListProps {
   isFetchingNextPage?: boolean
   onLoadMore?: () => void
   onFavoriteChange?: () => void
+  emptyType?: 'no-results' | 'no-favorites'
 }
 
 export const BookList = ({ 
@@ -23,6 +24,7 @@ export const BookList = ({
   isFetchingNextPage,
   onLoadMore,
   onFavoriteChange,
+  emptyType = 'no-results',
 }: BookListProps) => {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const [expandedBooks, setExpandedBooks] = useState<Set<string>>(new Set())
@@ -117,7 +119,7 @@ export const BookList = ({
 
   // 검색 결과가 없는 경우
   if (hasSearched && books.length === 0) {
-    return <EmptyState type="no-results" />
+    return <EmptyState type={emptyType} />
   }
 
   // 검색 전 또는 결과가 있는 경우

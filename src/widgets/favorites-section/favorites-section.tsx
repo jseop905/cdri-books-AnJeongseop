@@ -31,6 +31,7 @@ export const FavoritesSection = () => {
         hasNextPage={hasNextPage}
         onLoadMore={onLoadMore}
         onFavoriteChange={onFavoriteChange}
+        emptyType="no-favorites"
       />
     </div>
   )
