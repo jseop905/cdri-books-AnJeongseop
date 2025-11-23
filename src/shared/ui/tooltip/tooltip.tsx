@@ -58,7 +58,6 @@ export const Tooltip = ({
           break
       }
 
-      // 화면 경계 체크 및 조정
       const padding = 8
       if (left < padding) left = padding
       if (left + tooltipRect.width > window.innerWidth - padding) {

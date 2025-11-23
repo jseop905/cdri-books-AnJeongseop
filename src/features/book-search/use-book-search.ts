@@ -24,7 +24,6 @@ export const useBookSearch = (options: UseBookSearchOptions) => {
         target,
       }),
     getNextPageParam: (lastPage, allPages) => {
-      // is_end가 false이면 다음 페이지가 있음
       if (!lastPage.meta.is_end) {
         return allPages.length + 1
       }
@@ -36,7 +35,6 @@ export const useBookSearch = (options: UseBookSearchOptions) => {
   })
 }
 
-// 모든 페이지의 도서를 평탄화하는 헬퍼 함수
 export const flattenBooks = (data: { pages: SearchBookResponse[] } | undefined): Book[] => {
   if (!data) return []
   return data.pages.flatMap((page) => page.documents)

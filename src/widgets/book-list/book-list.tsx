@@ -30,7 +30,6 @@ export const BookList = ({
   const [expandedBooks, setExpandedBooks] = useState<Set<string>>(new Set())
   const [favoriteBooks, setFavoriteBooks] = useState<Set<string>>(new Set())
 
-  // 초기 찜 상태 로드
   useEffect(() => {
     const favorites = getFavorites()
     setFavoriteBooks(new Set(favorites.map((book) => book.isbn)))
@@ -60,13 +59,11 @@ export const BookList = ({
       }
       return newSet
     })
-    // 찜 상태 변경 시 부모 컴포넌트에 알림
     if (onFavoriteChange) {
       onFavoriteChange()
     }
   }, [onFavoriteChange])
 
-  // Intersection Observer로 하단 감지
   useEffect(() => {
     if (!hasNextPage || !onLoadMore || isLoading) return
 
@@ -94,7 +91,6 @@ export const BookList = ({
     }
   }, [hasNextPage, onLoadMore, isLoading, isFetchingNextPage])
 
-  // 로딩 중
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -103,7 +99,6 @@ export const BookList = ({
     )
   }
 
-  // 에러 발생
   if (isError) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -112,17 +107,14 @@ export const BookList = ({
     )
   }
 
-  // 페이지 최초 접근 시
   if (!hasSearched && books.length === 0) {
     return <EmptyState type="initial" />
   }
 
-  // 검색 결과가 없는 경우
   if (hasSearched && books.length === 0) {
     return <EmptyState type={emptyType} />
   }
 
-  // 검색 전 또는 결과가 있는 경우
   if (books.length === 0) {
     return null
   }
@@ -156,7 +148,6 @@ export const BookList = ({
           )
         })}
       </div>
-      {/* 무한 스크롤 트리거 요소 */}
       {hasNextPage && (
         <div ref={loadMoreRef} className="h-20 flex items-center justify-center">
           {isFetchingNextPage && (
@@ -164,7 +155,6 @@ export const BookList = ({
           )}
         </div>
       )}
-      {/* 모든 데이터 로드 완료 */}
       {!hasNextPage && books.length > 0 && (
         <div className="h-20 flex items-center justify-center">
           <div className="text-body1 text-text-secondary">모든 결과를 불러왔습니다.</div>

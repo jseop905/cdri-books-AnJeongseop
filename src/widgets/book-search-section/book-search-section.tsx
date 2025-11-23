@@ -34,7 +34,6 @@ export const BookSearchSection = () => {
       setSearchQuery(trimmedQuery)
       setSearchTarget(target)
       setHasSearched(true)
-      // 최근 검색어에 추가
       addRecentSearch(trimmedQuery)
     }
   }

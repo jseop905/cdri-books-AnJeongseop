@@ -67,7 +67,6 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
     e.preventDefault()
     setShowRecentSearches(false)
     if (searchQuery.trim().length > 0) {
-      // 상세 검색 내용 초기화
       setDetailSearchQuery('')
       setDetailSearchTarget('title')
       setShowDetailSearch(false)
@@ -82,11 +81,9 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
   const handleDetailSearchSubmit = useCallback(() => {
     const trimmedQuery = detailSearchQuery.trim()
     if (trimmedQuery.length > 0) {
-      // 기본 검색 내용 초기화
       setSearchQuery('')
       onSearch(trimmedQuery, detailSearchTarget)
       setShowDetailSearch(false)
-      // 상세 검색 내용은 유지 (초기화하지 않음)
     }
   }, [detailSearchQuery, detailSearchTarget, onSearch])
 
@@ -175,7 +172,6 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
           </div>
           {showDetailSearch && (
             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[400px] bg-palette-white rounded-lg shadow-lg z-50">
-              {/* 닫기 버튼 영역 */}
               <div className="flex justify-end p-1 pb-0">
                 <button
                   type="button"
@@ -200,12 +196,9 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                   </svg>
                 </button>
               </div>
-              {/* 팝업 본문 */}
               <div className="px-6 pt-[36px] pb-[36px] flex flex-col gap-4">
-                {/* 셀렉트 박스와 검색어 입력 */}
                 <div className="flex gap-2">
                   <div className="relative w-[100px]" ref={selectRef}>
-                    {/* 셀렉트 박스 */}
                     <div
                       onClick={() => setShowSelectDropdown(!showSelectDropdown)}
                       className="w-full h-[36px] border-0 border-b border-palette-gray rounded-none bg-transparent cursor-pointer flex items-center justify-between relative"
@@ -213,7 +206,6 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                       <div className="pl-2 text-body2-bold text-text-primary">
                         {detailSearchTarget === 'title' ? '제목' : detailSearchTarget === 'person' ? '저자명' : '출판사'}
                       </div>
-                      {/* 화살표 아이콘 */}
                       <div className="pr-2">
                         <svg
                           width="16"
@@ -232,7 +224,6 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                         </svg>
                       </div>
                     </div>
-                    {/* 드롭다운 메뉴 */}
                     {showSelectDropdown && (
                       <div className="absolute top-full left-0 right-0 mt-1 bg-palette-white border border-palette-gray rounded-lg shadow-lg z-50">
                         {detailSearchTarget !== 'title' && (
@@ -280,10 +271,8 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                       onKeyPress={handleDetailSearchKeyPress}
                       className="w-full h-[36px] px-2 border-0 border-b border-palette-gray rounded-none text-caption transition-all duration-200 focus:outline-none focus:border-palette-primary focus:ring-0 placeholder:text-text-subtitle"
                     />
-                  </div>
+                    </div>
                 </div>
-
-                {/* 검색하기 버튼 */}
                 <Button
                   type="button"
                   variant="primary"
