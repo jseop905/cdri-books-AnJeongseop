@@ -72,7 +72,7 @@ export const BookDetail = memo(({
         </div>
 
         {/* 우측: 상세보기 버튼, 가격, 구매하기 */}
-        <div className="flex flex-col items-end justify-between w-[200px] flex-shrink-0">
+        <div className="flex flex-col items-end justify-between w-[200px] flex-shrink-0 mr-4">
           {/* 상세보기 버튼 (우상단) */}
           <Button
             variant="lightGray"

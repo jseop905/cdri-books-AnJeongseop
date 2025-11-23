@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Noto Sans KR', 'sans-serif'],
+      },
       colors: {
         // Palette colors
         palette: {
