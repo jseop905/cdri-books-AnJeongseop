@@ -11,7 +11,6 @@ export const PAGE_SIZE = {
 // 최근 검색어
 export const RECENT_SEARCHES = {
   MAX_COUNT: 8, // 최대 저장 개수
-  COOKIE_EXPIRY_DAYS: 30, // 쿠키 만료일
 } as const
 
 // API/쿼리
