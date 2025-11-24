@@ -55,11 +55,11 @@ src/
 ├── widgets/               # 복합 UI 블록
 │   ├── book-search/       # 검색 UI (검색창, 상세검색, 최근검색어)
 │   ├── book-list/         # 도서 목록 (리스트, 카드/상세 뷰, 무한스크롤)
-│   ├── book-search-section/ # 검색 섹션 통합
 │   └── header/            # 헤더 네비게이션
 │
 ├── features/              # 비즈니스 기능
-│   └── book-search/       # 도서 검색 훅 (React Query infinite query)
+│   ├── book-search/       # 도서 검색 훅 (React Query infinite query)
+│   └── favorites-list/    # 찜 목록 훅 (localStorage 기반 페이지네이션)
 │
 └── shared/                # 공유 코드
     ├── api/               # API 클라이언트 (카카오 도서 검색 API)
