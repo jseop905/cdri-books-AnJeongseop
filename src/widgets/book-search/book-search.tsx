@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Input, Button } from '@shared/ui'
-import searchIcon from '@shared/assets/icons/icon-search.png'
+import { Button } from '@shared/ui'
+import { cn } from '@shared/lib/cn'
 import { getRecentSearches, removeRecentSearch } from '@shared/lib/recent-searches'
 
 interface BookSearchProps {
@@ -9,6 +9,12 @@ interface BookSearchProps {
 }
 
 type SearchTarget = 'title' | 'person' | 'publisher'
+
+const SEARCH_TARGET_LABELS: Record<SearchTarget, string> = {
+  title: '제목',
+  person: '저자명',
+  publisher: '출판사',
+}
 
 export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -22,26 +28,29 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
   const detailSearchRef = useRef<HTMLDivElement>(null)
   const selectRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setShowRecentSearches(false)
-      }
-      if (detailSearchRef.current && !detailSearchRef.current.contains(event.target as Node)) {
-        setShowDetailSearch(false)
-      }
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setShowSelectDropdown(false)
-      }
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      setShowRecentSearches(false)
     }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+    if (detailSearchRef.current && !detailSearchRef.current.contains(event.target as Node)) {
+      setShowDetailSearch(false)
+    }
+    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+      setShowSelectDropdown(false)
     }
   }, [])
 
-  const handleInputClick = useCallback(() => {
+  useEffect(() => {
+    if (showRecentSearches || showDetailSearch || showSelectDropdown) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showRecentSearches, showDetailSearch, showSelectDropdown, handleClickOutside])
+
+  const handleInputFocus = useCallback(() => {
     const searches = getRecentSearches()
     setRecentSearches(searches)
     setShowRecentSearches(searches.length > 0)
@@ -65,12 +74,25 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
-    setShowRecentSearches(false)
     if (searchQuery.trim().length > 0) {
       setDetailSearchQuery('')
       setDetailSearchTarget('title')
       setShowDetailSearch(false)
       onSearch(searchQuery.trim())
+      setShowRecentSearches(false)
+    }
+  }, [searchQuery, onSearch])
+
+  const handleInputKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (searchQuery.trim().length > 0) {
+        setDetailSearchQuery('')
+        setDetailSearchTarget('title')
+        setShowDetailSearch(false)
+        onSearch(searchQuery.trim())
+        setShowRecentSearches(false)
+      }
     }
   }, [searchQuery, onSearch])
 
@@ -87,7 +109,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
     }
   }, [detailSearchQuery, detailSearchTarget, onSearch])
 
-  const handleDetailSearchKeyPress = useCallback((e: React.KeyboardEvent) => {
+  const handleDetailSearchKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
       handleDetailSearchSubmit()
@@ -104,62 +126,76 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
         도서 검색
       </div>
       <form onSubmit={handleSubmit} className="flex gap-4 items-center">
-        <div ref={containerRef} className="w-[480px] relative">
-          <img 
-            src={searchIcon} 
-            alt="검색" 
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none z-10"
-          />
-          <Input
+        <div ref={containerRef} className="relative w-full max-w-[480px]">
+          <svg
+            className="absolute top-1/2 left-2.5 -translate-y-1/2 w-5 h-5 pointer-events-none z-10"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16ZM18 18l-4.35-4.35"
+              stroke="#353C49"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <input
             type="text"
-            placeholder="검색어를 입력하세요"
+            placeholder="검색어를 입력해주세요."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onClick={handleInputClick}
-            className="h-[50px] pl-[50px] pr-[10px] py-[10px] text-caption text-text-subtitle bg-palette-lightGray border-none"
+            onFocus={handleInputFocus}
+            onKeyDown={handleInputKeyDown}
+            className={cn(
+              'w-full h-[50px] pl-[51px] pr-[10px] py-[10px] text-caption text-text-subtitle bg-palette-lightGray border-none transition-all duration-200',
+              'focus:outline-none focus:ring-0 placeholder:text-text-subtitle',
+              {
+                'rounded-t-3xl rounded-b-none': showRecentSearches && recentSearches.length > 0,
+                'rounded-3xl': !showRecentSearches || recentSearches.length === 0,
+              }
+            )}
           />
           {showRecentSearches && recentSearches.length > 0 && (
-            <div 
-              className="absolute top-full left-0 right-0 bg-[#F2F4F6] z-50 max-h-[300px] overflow-y-auto mt-1"
-            >
-              <div className="pb-4">
-                {recentSearches.map((search, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between px-4 py-2 hover:bg-palette-white transition-colors group cursor-pointer"
+            <div className="bg-palette-lightGray absolute top-full left-0 flex w-full flex-col gap-4 rounded-b-3xl py-6 pr-6 pl-[51px] z-10 max-h-[300px] overflow-y-auto">
+              {recentSearches.map((search) => (
+                <div
+                  key={search}
+                  className="flex justify-between items-center"
+                  data-testid="history-item"
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleRecentSearchClick(search)}
+                    className="flex-1 text-left text-caption text-text-subtitle cursor-pointer"
                   >
-                    <button
-                      type="button"
-                      onClick={() => handleRecentSearchClick(search)}
-                      className="flex-1 text-left text-body2 text-text-primary"
+                    {search}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => handleDeleteSearch(e, search)}
+                    className="shrink-0 cursor-pointer ml-2"
+                    aria-label="삭제"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      {search}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => handleDeleteSearch(e, search)}
-                      className="ml-2 w-5 h-5 flex items-center justify-center hover:bg-palette-lightGray"
-                      aria-label="검색어 삭제"
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 3L3 9M3 3L9 9"
-                          stroke="#8D94A0"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-              </div>
+                      <path
+                        d="M12 4L4 12M4 4L12 12"
+                        stroke="#222222"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -199,12 +235,15 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
               <div className="px-6 pt-[36px] pb-[36px] flex flex-col gap-4">
                 <div className="flex gap-2">
                   <div className="relative w-[100px]" ref={selectRef}>
-                    <div
+                    <button
+                      type="button"
                       onClick={() => setShowSelectDropdown(!showSelectDropdown)}
                       className="w-full h-[36px] border-0 border-b border-palette-gray rounded-none bg-transparent cursor-pointer flex items-center justify-between relative"
+                      aria-label="검색 타겟 선택"
+                      aria-expanded={showSelectDropdown}
                     >
                       <div className="pl-2 text-body2-bold text-text-primary">
-                        {detailSearchTarget === 'title' ? '제목' : detailSearchTarget === 'person' ? '저자명' : '출판사'}
+                        {SEARCH_TARGET_LABELS[detailSearchTarget]}
                       </div>
                       <div className="pr-2">
                         <svg
@@ -223,42 +262,25 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                           />
                         </svg>
                       </div>
-                    </div>
+                    </button>
                     {showSelectDropdown && (
                       <div className="absolute top-full left-0 right-0 mt-1 bg-palette-white border border-palette-gray rounded-lg shadow-lg z-50">
-                        {detailSearchTarget !== 'title' && (
-                          <div
-                            onClick={() => {
-                              setDetailSearchTarget('title')
-                              setShowSelectDropdown(false)
-                            }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
-                          >
-                            제목
-                          </div>
-                        )}
-                        {detailSearchTarget !== 'person' && (
-                          <div
-                            onClick={() => {
-                              setDetailSearchTarget('person')
-                              setShowSelectDropdown(false)
-                            }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
-                          >
-                            저자명
-                          </div>
-                        )}
-                        {detailSearchTarget !== 'publisher' && (
-                          <div
-                            onClick={() => {
-                              setDetailSearchTarget('publisher')
-                              setShowSelectDropdown(false)
-                            }}
-                            className="px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle"
-                          >
-                            출판사
-                          </div>
-                        )}
+                        {(Object.keys(SEARCH_TARGET_LABELS) as SearchTarget[]).map((target) => {
+                          if (target === detailSearchTarget) return null
+                          return (
+                            <button
+                              key={target}
+                              type="button"
+                              onClick={() => {
+                                setDetailSearchTarget(target)
+                                setShowSelectDropdown(false)
+                              }}
+                              className="w-full px-4 py-2 hover:bg-palette-lightGray cursor-pointer transition-colors text-body2 text-text-subtitle text-left"
+                            >
+                              {SEARCH_TARGET_LABELS[target]}
+                            </button>
+                          )
+                        })}
                       </div>
                     )}
                   </div>
@@ -268,7 +290,7 @@ export const BookSearch = ({ onSearch, resultCount }: BookSearchProps) => {
                       placeholder="검색어 입력"
                       value={detailSearchQuery}
                       onChange={(e) => setDetailSearchQuery(e.target.value)}
-                      onKeyPress={handleDetailSearchKeyPress}
+                      onKeyDown={handleDetailSearchKeyDown}
                       className="w-full h-[36px] px-2 border-0 border-b border-palette-gray rounded-none text-caption transition-all duration-200 focus:outline-none focus:border-palette-primary focus:ring-0 placeholder:text-text-subtitle"
                     />
                     </div>
